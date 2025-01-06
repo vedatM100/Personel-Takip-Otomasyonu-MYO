@@ -20,7 +20,7 @@ namespace Personel_Takip_Otomasyonu
 
         private void frmPersonelListele_Load(object sender, EventArgs e)
         {
-            Personeller.comboyaDepartmanGetir(comboDepartman);
+            Personeller.comboyaKayitGetir(comboDepartman);
             YenileListele();
         }
         private void YenileListele()
@@ -47,9 +47,11 @@ namespace Personel_Takip_Otomasyonu
                 }
             }
         }
+        Personeller p = new Personeller();
+        Kullanicilar k = new Kullanicilar();
         private void btnGüncelle_Click(object sender, EventArgs e)
         {
-            Personeller p = new Personeller();
+        
             p.PERSONELID = int.Parse(txtPersonelID.Text);
             p.Adi = txtAdi.Text;
             p.Soyaadi = txtSoyadi.Text;
@@ -66,6 +68,9 @@ namespace Personel_Takip_Otomasyonu
             komut.Parameters.Add("@Maasi", SqlDbType.Decimal).Value = p.Maas;
             komut.Parameters.Add("@GirisTarihi", SqlDbType.Date).Value = p.GirisTarihi;
             Veritabani.ESG(komut, sorgu);
+            p.Islem = p.PERSONELID + "nolu personelin bilgileri güncellendi";
+            p.Aciklama = "Personel güncelleme";
+            Personeller.PersonelislemEkle(p,k);
             Temizle();
             MessageBox.Show("İşlem Başarılı.", "Güncelleme", MessageBoxButtons.OK, MessageBoxIcon.Information);
             YenileListele();
@@ -78,14 +83,18 @@ namespace Personel_Takip_Otomasyonu
 
         private void btnSil_Click(object sender, EventArgs e)
         {
-            Personeller p = new Personeller();
+            
             p.PERSONELID = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
             //string sorgu = "delete from Personeller where PersonelID='" + p.PERSONELID + "'";
             //SqlCommand komut = new SqlCommand();
             //Veritabani.ESG(komut, sorgu);
-            string sorgu2 = "update Personeller set Durumu='Pasif' where PersonelID='" + p.PERSONELID + "'";
+            p.CikisTarihi=DateTime.Now;
+            string sorgu2 = "update Personeller set Durumu='Pasif',CikisTarihi=@CikisTarihi where PersonelID='" + p.PERSONELID + "'";
             SqlCommand komut2 = new SqlCommand();
+            komut2.Parameters.Add("@CikisTarihi",SqlDbType.Date).Value=p.CikisTarihi;
             Veritabani.ESG(komut2, sorgu2);
+            p.Islem = p.PERSONELID + " nolu personel işten çıkarıldı.";
+            p.Aciklama = " işten çıkarma";
             Temizle();
             MessageBox.Show("İşlem Başarılı.", "Sil", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             YenileListele();

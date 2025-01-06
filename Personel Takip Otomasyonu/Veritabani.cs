@@ -11,7 +11,7 @@ namespace Personel_Takip_Otomasyonu
 {
     class Veritabani
     {
-        public static SqlConnection baglanti = new SqlConnection("Data Source=VEDAT\\SQLEXPRESS;Initial Catalog=Personel_Takip;Integrated Security=True;Pooling=False");
+        public static SqlConnection baglanti = new SqlConnection("Data Source=DESKTOP-FN2S3SI\\SQLEXPRESS01;Initial Catalog=Personel_Takip;Integrated Security=True;Pooling=False");
         public static void ESG(SqlCommand cmd, string sql)
         {
             baglanti.Open();

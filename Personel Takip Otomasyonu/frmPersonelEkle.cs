@@ -20,7 +20,7 @@ namespace Personel_Takip_Otomasyonu
 
         private void frmPersonelEkle_Load(object sender, EventArgs e)
         {
-            Personeller.comboyaDepartmanGetir(comboDepartman);
+            Personeller.comboyaKayitGetir(comboDepartman);
 
         }
 
@@ -40,9 +40,11 @@ namespace Personel_Takip_Otomasyonu
                 }
             }
         }
+        Personeller p = new Personeller();
+        Kullanicilar k= new Kullanicilar();
         private void btnEkle_Click(object sender, EventArgs e)
         {
-            Personeller p = new Personeller();
+           
             p.Adi = txtAdi.Text;
             p.Soyaadi = txtSoyadi.Text;
             p.Telefon = txtTelefon.Text;
@@ -59,6 +61,12 @@ namespace Personel_Takip_Otomasyonu
             komut.Parameters.Add("@GirisTarihi", SqlDbType.Date).Value = p.GirisTarihi;
 
             Veritabani.ESG(komut, sorgu);
+            Personeller.PersonelIDSonKayit(p);
+            p.Islem = p.PERSONELID + "nolu yeni personel kaydı oluşturuldu";
+            p.Aciklama = "Yeni personel ekleme";
+
+
+            Personeller.PersonelislemEkle(p, k);
             Temizle();
             MessageBox.Show("İşlem Başarılı.", "Kayıt", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

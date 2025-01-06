@@ -51,5 +51,10 @@ namespace Personel_Takip_Otomasyonu
         {
             btnGiris.PerformClick();
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
